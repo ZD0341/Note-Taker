@@ -45,14 +45,13 @@ const saveNote = (note) =>
     },
     body: JSON.stringify(note)
   });
-
-const deleteNote = (id) =>
 // Need to handle cache here as well
-  fetch(`/api/notes/${id}`, {
-    method: 'DELETE',
+ const deleteNote = (id) => 
+  fetch(`/api/notes${id}`, {
+    method: "DELETE",
     headers: {
-      'Content-Type': 'application/json'
-    }
+      'Content-Type': 'application/json',
+    },
   });
 
 const renderActiveNote = () => {

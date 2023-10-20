@@ -1,16 +1,16 @@
 const express = require('express');
 const fs = require('fs');
 const path = require('path');
-// const PORT = 5500;
+const PORT = process.env.PORT || 3001;
 const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-const PORT = process.env.PORT || 3001
+
+//:   app.use('/api', api);     <- should we add this??
+
 //serve asset library from this folder
 app.use(express.static(__dirname + '/public'));
-
-//TODO: make post route
 
 app.get('/api/notes', (req, res) => {
   fs.readFile('./db/db.json', 'utf-8', (err, data) => {
@@ -25,14 +25,13 @@ app.get('/api/notes', (req, res) => {
   });
 });
 
-function getNotes() {
-  // Read existing notes from the JSON file
+function getNotes(callback) {
   fs.readFile('./db/db.json', 'utf-8', (err, data) => {
     if (err) {
-      res.status(500).send(`Error reading the JSON file\n${err}`);
+      callback(err, null);
     } else {
-      console.log('here')
-      return JSON.parse(data)
+      const notes = JSON.parse(data);
+      callback(null, notes);
     }
   });
 }
@@ -81,15 +80,15 @@ app.get('/status', (request, response) => {
 });
 
 app.get('/notes', function (req, res) {
-  res.sendFile(path.join(__dirname, '\\public\\notes.html'));
+  res.sendFile(path.join(__dirname, '/public/notes.html'));
 });
 
 app.get('/index.html', function (req, res) {
-  res.sendFile(path.join(__dirname, '\\public\\index.html'));
+  res.sendFile(path.join(__dirname, '/public/index.html'));
 });
 
 app.get('*', function (req, res) {
-  res.sendFile(path.join(__dirname, '\\public\\index.html'));
+  res.sendFile(path.join(__dirname, '/public/index.html'));
 });
 
 app.listen(PORT, () =>
