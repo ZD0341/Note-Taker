@@ -9,8 +9,6 @@ const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-
-//serve asset library from this folder
 app.use(express.static('public'));
 
 app.get('/api/notes', (req, res) => {
@@ -26,19 +24,6 @@ app.get('/api/notes', (req, res) => {
   });
 });
 
-function getNotes(callback) {
-
-}
-
-// app.post('/api/notes', (req, res) => {
-//   if(req.body){
-//     console.log(req.body)
-//     res.json('done')
-//   }else {
-//     res.json('Error in POST. No Body Content Received');
-//   }
-// });
-
 app.post('/api/notes', (req, res) => {
   // Assuming req.body contains the new note data in JSON format
   const newNote = req.body;
@@ -50,7 +35,7 @@ app.post('/api/notes', (req, res) => {
       const notes = JSON.parse(data);
       //console.log(notes)
 
-      var count = Object.keys(notes).length;
+      var count = notes.length;
       //console.log(count);
       newNote.id = count + 1; //using index as id
 
@@ -68,11 +53,50 @@ app.post('/api/notes', (req, res) => {
 
     }
   });
-
-
-
 });
 
+app.delete('/api/notes/:id', (req, res) => {
+  // console.log(req.params)
+  fs.readFile('./db/db.json', 'utf-8', (err, data) => {
+    if (err) {
+      console.error(err);
+    } else {
+      const dataJson = JSON.parse(data);
+      // console.log(dataJson);
+
+      var newData = [];
+      let matched = false;
+      for (i in dataJson) {
+        // console.log(dataJson[i]);
+        if (dataJson[i].id == req.params.id) {
+          // console.log("match")
+          matched = true;
+        } else {
+          if (matched) {
+            let newJson = dataJson[i];
+            newJson.id = newJson.id - 1;
+            newData.push(newJson);
+          } else {
+            newData.push(dataJson[i]);
+          }
+        }
+      }      
+      // console.log(newData)
+      if(matched){
+        fs.writeFile('./db/db.json', JSON.stringify(newData, null, 2), (err) => {
+          if (err) {
+            console.error(err)
+            res.status(500).send(`Error writing the JSON file\n${err}`);
+          } else {
+            res.status(204).json("Note deleted.");
+          }
+        });
+      }else{
+        res.status(404).send("Note not found");
+      }      
+    }
+  });
+});
 
 app.get('/status', (request, response) => {
   const status = {
