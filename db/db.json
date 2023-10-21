@@ -8,15 +8,5 @@
     "title": "different title same text",
     "text": "Test text",
     "id": 2
-  },
-  {
-    "title": "Lorem Ipsum",
-    "text": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas eget massa non sapien aliquam elementum. Nulla tincidunt neque et magna feugiat pretium. Maecenas lectus lorem, tempus at nibh et, tempus sodales lacus. Maecenas pharetra hendrerit sem in dictum. Fusce molestie eleifend elementum. Etiam ultrices imperdiet tellus facilisis cursus. Vivamus elementum lacinia lacus, nec gravida elit tincidunt vel. Nulla non tristique orci, sit amet viverra ligula. Cras in feugiat massa. Suspendisse faucibus in erat a sodales. Donec pretium lacus neque, a scelerisque odio sodales at.",
-    "id": 3
-  },
-  {
-    "title": "Lorem Ipsum",
-    "text": "this is a test to show that there can be things with two titles",
-    "id": 4
   }
 ]
